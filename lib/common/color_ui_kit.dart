@@ -1,5 +1,5 @@
 import 'dart:ui';
 
-class CommonUiKit{
+class ColorUiKit{
   static Color backgroundColor = const Color(0x0ffaf3f0);
 }
