@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_financial_records/common/color_ui_kit.dart';
+import 'package:simple_financial_records/features/home/presentation/add_transaction_dialog.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -66,7 +67,11 @@ class HomePage extends StatelessWidget {
                           side: BorderSide(width: 2.0, color: Colors.black)),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(context: context, builder: (context){
+                      return const AddTransactionDialog(isAddIncome: true,);
+                    });
+                  },
                   child: const Icon(
                     Icons.add,
                     size: 40,
@@ -87,7 +92,11 @@ class HomePage extends StatelessWidget {
                           side: BorderSide(width: 2.0, color: Colors.black)),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                      showDialog(context: context, builder: (context){
+                        return const AddTransactionDialog(isAddIncome: false,);
+                      });
+                    },
                   child: const Icon(
                     Icons.remove,
                     size: 40,
