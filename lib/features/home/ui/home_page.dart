@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_financial_records/common/color_ui_kit.dart';
 import 'package:simple_financial_records/common/widget/list_transaction.dart';
-import 'package:simple_financial_records/features/home/presentation/add_transaction_dialog.dart';
+import 'package:simple_financial_records/features/home/ui/add_transaction_dialog.dart';
 import 'package:simple_financial_records/features/transaction_history/presentation/transaction_history_page.dart';
 
 class HomePage extends StatelessWidget {
