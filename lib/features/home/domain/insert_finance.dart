@@ -1,5 +1,6 @@
+import '../database/model/transaction_model.dart';
 import 'finance.dart';
 
 abstract interface class InsertFinance{
-  void insertFinance();
+  void insertFinance(TransactionModel transactionModel);
 }

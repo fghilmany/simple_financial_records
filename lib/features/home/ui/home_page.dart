@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_financial_records/common/color_ui_kit.dart';
 import 'package:simple_financial_records/common/widget/list_transaction.dart';
+import 'package:simple_financial_records/features/home/domain/transaction_type.dart';
 import 'package:simple_financial_records/features/home/presentation/home_page_bloc.dart';
 import 'package:simple_financial_records/features/home/ui/add_transaction_dialog.dart';
 import 'package:simple_financial_records/features/transaction_history/presentation/transaction_history_page.dart';
@@ -23,7 +26,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<HomePageBloc>(context).add(const HomePageEvent.insertFinance());
     BlocProvider.of<HomePageBloc>(context).add(const HomePageEvent.loadFinance());
   }
 
@@ -65,17 +67,17 @@ class _HomePageState extends State<HomePage> {
         listener: (context, state) {
           state.when(
             initial: () {
-              print("orElse");
+              log("orElse");
             },
             isLoading: () {
-              print("isLoading");
+              log("isLoading");
             },
             isLoadFinance: (finance) {
               this.finance = finance;
-              print("data: ${finance.total}");
+              log("data: ${finance.total}");
             },
             isError: (errorMessage) {
-              print("errorMessage");
+              log("errorMessage");
             },
           );
         },
@@ -119,8 +121,12 @@ class _HomePageState extends State<HomePage> {
                         showDialog(
                             context: context,
                             builder: (context) {
-                              return const AddTransactionDialog(
-                                isAddIncome: true,
+                              return AddTransactionDialog(
+                                type: TransactionType.income.name,
+                                onClick: (transactionModel){
+                                  BlocProvider.of<HomePageBloc>(context).add(HomePageEvent.insertFinance(transactionModel));
+                                  BlocProvider.of<HomePageBloc>(context).add(const HomePageEvent.loadFinance());
+                                },
                               );
                             });
                       },
@@ -149,8 +155,12 @@ class _HomePageState extends State<HomePage> {
                         showDialog(
                             context: context,
                             builder: (context) {
-                              return const AddTransactionDialog(
-                                isAddIncome: false,
+                              return AddTransactionDialog(
+                                type: TransactionType.outcome.name,
+                                onClick: (transactionModel){
+                                  BlocProvider.of<HomePageBloc>(context).add(HomePageEvent.insertFinance(transactionModel));
+                                  BlocProvider.of<HomePageBloc>(context).add(const HomePageEvent.loadFinance());
+                                },
                               );
                             });
                       },

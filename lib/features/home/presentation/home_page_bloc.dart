@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:simple_financial_records/features/home/database/model/transaction_model.dart';
 import 'package:simple_financial_records/features/home/domain/finance.dart';
 
 import '../domain/insert_finance.dart';
@@ -31,8 +32,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
             },
           );
         },
-        insertFinance: () {
-          insertFinanceUseCase.insertFinance();
+        insertFinance: (transactionModel) {
+          insertFinanceUseCase.insertFinance(transactionModel);
         },
       );
     });

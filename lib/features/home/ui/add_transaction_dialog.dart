@@ -1,11 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_financial_records/common/color_ui_kit.dart';
+import 'package:simple_financial_records/features/home/database/model/transaction_model.dart';
+import 'package:simple_financial_records/features/home/domain/transaction_type.dart';
 
-class AddTransactionDialog extends StatelessWidget {
-  const AddTransactionDialog({super.key, required this.isAddIncome});
+class AddTransactionDialog extends StatefulWidget {
+  const AddTransactionDialog({super.key, required this.type, required this.onClick});
 
-  final bool isAddIncome;
+  final String type;
+  final Function(TransactionModel transactionModel) onClick;
+
+  @override
+  State<AddTransactionDialog> createState() => _AddTransactionDialogState();
+}
+
+class _AddTransactionDialogState extends State<AddTransactionDialog> {
+
+  final TextEditingController nominalController = TextEditingController();
+  final TextEditingController notesController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +29,7 @@ class AddTransactionDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "Input ${isAddIncome ? "Income" : "Outcome"}",
+              "Input ${widget.type == TransactionType.income.name ? "Income" : "Outcome"}",
               style: const TextStyle(
                 color: Colors.black,
                 fontSize: 18,
@@ -25,6 +37,7 @@ class AddTransactionDialog extends StatelessWidget {
               ),
             ),
             TextFormField(
+              controller: nominalController,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                 prefix: Text("Rp"),
@@ -33,6 +46,7 @@ class AddTransactionDialog extends StatelessWidget {
               ),
             ),
             TextFormField(
+              controller: notesController,
               decoration: const InputDecoration(
                 border: UnderlineInputBorder(),
                 labelText: "Notes",
@@ -48,6 +62,9 @@ class AddTransactionDialog extends StatelessWidget {
                       MaterialStateProperty.all(ColorUiKit.buttonColor),
                 ),
                 onPressed: () {
+                  setState(() {
+                    widget.onClick(TransactionModel(nominal: int.parse(nominalController.value.text), dates: DateTime.now().millisecond, notes: notesController.value.text, type: widget.type));
+                  });
                   Navigator.pop(context);
                 },
                 child: const Text(

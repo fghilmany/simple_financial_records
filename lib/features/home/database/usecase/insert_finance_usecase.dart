@@ -13,12 +13,8 @@ class InsertFinanceUseCase implements InsertFinance{
   InsertFinanceUseCase({required this.dbHelper});
 
   @override
-  void insertFinance() {
-    dbHelper.insert(TransactionQuery.TRANSACTION_TABLE_NAME, Map<String, Object>.from(TransactionModel(nominal: 10000, dates: 29999, notes: "notes", type: TransactionType.income.name).toJson()));
-    dbHelper.insert(TransactionQuery.TRANSACTION_TABLE_NAME, Map<String, Object>.from(TransactionModel(nominal: 10000, dates: 29999, notes: "notes", type: TransactionType.outcome.name).toJson()));
-    dbHelper.insert(TransactionQuery.TRANSACTION_TABLE_NAME, Map<String, Object>.from(TransactionModel(nominal: 10000, dates: 29999, notes: "notes", type: TransactionType.outcome.name).toJson()));
-    dbHelper.insert(TransactionQuery.TRANSACTION_TABLE_NAME, Map<String, Object>.from(TransactionModel(nominal: 10000, dates: 29999, notes: "notes", type: TransactionType.income.name).toJson()));
-    dbHelper.insert(TransactionQuery.TRANSACTION_TABLE_NAME, Map<String, Object>.from(TransactionModel(nominal: 10000, dates: 29999, notes: "notes", type: TransactionType.income.name).toJson()));
+  void insertFinance(TransactionModel transactionModel) {
+    dbHelper.insert(TransactionQuery.TRANSACTION_TABLE_NAME, Map<String, Object>.from(transactionModel.toJson()));
   }
 
 }
