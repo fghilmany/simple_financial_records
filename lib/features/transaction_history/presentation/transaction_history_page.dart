@@ -37,10 +37,10 @@ class TransactionHistoryPage extends StatelessWidget {
           const Column(
             children: [
               Text(
-                "01/01/2023",
+                "All",
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 12.0,
+                  fontSize: 18.0,
                 ),
               ),
               Divider(
@@ -50,9 +50,9 @@ class TransactionHistoryPage extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 24.0),
+            padding: const EdgeInsets.only(top: 40.0),
             child: ListView.builder(
-                padding: const EdgeInsets.only(bottom: 16.0),
+                padding: const EdgeInsets.only(bottom: 64.0),
                 itemCount: 10,
                 itemBuilder: (context, builder) {
                   return const ListTransaction();
