@@ -18,7 +18,7 @@ class LoadFinanceUseCase implements LoadFinance {
   Future<ResultData<Finance>> loadFinance() async {
 
     return dbHelper
-        .getData(TransactionQuery.TRANSACTION_TABLE_NAME)
+        .getDataWithQuery(TransactionQuery.SELECT_TRANSACTION)
         .then((values){
           int total = 0;
           var transactions = <TransactionModel>[];

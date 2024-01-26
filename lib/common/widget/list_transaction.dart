@@ -13,6 +13,7 @@ class ListTransaction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("debug: ${transaction?.date}");
     return Row(
       children: [
         if (transaction?.type == TransactionType.income.name) Container(
@@ -53,7 +54,7 @@ class ListTransaction extends StatelessWidget {
                         fontSize: 16.0),
                   ),
                   Text(
-                    transaction?.date.parseTimeMillisToDate("dd/mm/yyyy") ?? "",
+                    transaction?.date.parseTimeMillisToDate("dd/MM/yyyy") ?? "",
                     style: const TextStyle(
                         color: Colors.black, fontSize: 12.0),
                   ),

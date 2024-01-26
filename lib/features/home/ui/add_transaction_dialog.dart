@@ -63,7 +63,7 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
                 ),
                 onPressed: () {
                   setState(() {
-                    widget.onClick(TransactionModel(nominal: int.parse(nominalController.value.text), dates: DateTime.now().millisecond, notes: notesController.value.text, type: widget.type));
+                    widget.onClick(TransactionModel(nominal: int.parse(nominalController.value.text), dates: DateTime.now().millisecondsSinceEpoch, notes: notesController.value.text, type: widget.type));
                   });
                   Navigator.pop(context);
                 },
