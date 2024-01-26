@@ -2,5 +2,6 @@ part of 'home_page_bloc.dart';
 
 @freezed
 class HomePageEvent with _$HomePageEvent{
-  const factory HomePageEvent.loadFinance() = _HomePageResponseLoaded;
+  const factory HomePageEvent.loadFinance() = _HomePageLoaded;
+  const factory HomePageEvent.insertFinance() = _HomePageInserted;
 }

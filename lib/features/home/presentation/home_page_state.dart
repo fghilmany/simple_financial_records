@@ -6,4 +6,5 @@ class HomePageState with _$HomePageState {
   const factory HomePageState.isLoading() = _IsLoading;
   const factory HomePageState.isError(String errorMessage) =
   _IsError;
+  const factory HomePageState.isLoadFinance(Finance finance) = _IsLoadFinance;
 }

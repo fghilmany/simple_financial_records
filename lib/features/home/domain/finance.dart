@@ -1,25 +1,25 @@
 class Finance {
-  final int total;
-  final List<Transaction> transaction;
+  int? total;
+  List<Transaction>? transaction;
 
   Finance({
-    required this.total,
-    required this.transaction,
+    this.total,
+    this.transaction,
   });
 
 }
 
 class Transaction {
-  final int id;
   final int nominal;
   final int date;
   final String? notes;
+  final String type;
 
   Transaction({
-    required this.id,
     required this.nominal,
     required this.date,
     this.notes,
+    required this.type,
   });
 
 }
