@@ -59,7 +59,7 @@ class TransactionHistoryPage extends StatelessWidget {
                 }),
           ),
           Positioned(
-            bottom: 24.0,
+            bottom: 0.0,
             child: Container(
               width: MediaQuery.sizeOf(context).width,
               color: ColorUiKit.backgroundColor,
