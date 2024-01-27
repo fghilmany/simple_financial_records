@@ -17,7 +17,8 @@ class TransactionHistoryPage extends StatefulWidget {
   State<TransactionHistoryPage> createState() => _TransactionHistoryPageState();
 }
 
-class _TransactionHistoryPageState extends State<TransactionHistoryPage> with RestorationMixin {
+class _TransactionHistoryPageState extends State<TransactionHistoryPage>
+    with RestorationMixin {
   Finance finance = Finance();
 
   final RestorableDateTimeN _startDate = RestorableDateTimeN(null);
@@ -153,7 +154,9 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> with Re
     );
   }
 
-  late final RestorableRouteFuture<DateTimeRange?> _restorableDateRangePickerRouteFuture = RestorableRouteFuture<DateTimeRange?>(
+  late final RestorableRouteFuture<DateTimeRange?>
+      _restorableDateRangePickerRouteFuture =
+      RestorableRouteFuture<DateTimeRange?>(
     onComplete: _selectDateRange,
     onPresent: (NavigatorState navigator, Object? arguments) {
       return navigator
@@ -166,19 +169,21 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> with Re
 
   @pragma('vm:entry-point')
   static Route<DateTimeRange?> _dateRangePickerRoute(
-      BuildContext context,
-      Object? arguments,
-      ) {
+    BuildContext context,
+    Object? arguments,
+  ) {
     return DialogRoute<DateTimeRange?>(
       context: context,
       builder: (BuildContext context) {
         return DateRangePickerDialog(
           restorationId: 'date_picker_dialog',
           initialDateRange:
-          _initialDateTimeRange(arguments! as Map<dynamic, dynamic>),
+              _initialDateTimeRange(arguments! as Map<dynamic, dynamic>),
           firstDate: DateTime(2021),
-          currentDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
-          lastDate: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+          currentDate: DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day),
+          lastDate: DateTime(DateTime.now().year, DateTime.now().month + 1,
+              DateTime.now().day),
         );
       },
     );
@@ -189,6 +194,11 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> with Re
       setState(() {
         _startDate.value = newSelectedDate.start;
         _endDate.value = newSelectedDate.end;
+        BlocProvider.of<HistoryTransactionPageBloc>(context)
+            .add(HistoryTransactionPageEvent.loadFinanceRangeByDate(
+          _startDate.value!.millisecondsSinceEpoch,
+          _endDate.value!.millisecondsSinceEpoch,
+        ));
       });
     }
   }

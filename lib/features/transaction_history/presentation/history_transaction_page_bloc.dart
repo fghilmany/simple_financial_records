@@ -19,7 +19,7 @@ class HistoryTransactionPageBloc extends Bloc<HistoryTransactionPageEvent, Histo
       emit(const _IsLoading());
       await events.when(
         loadFinance: () async {
-          var result = await loadFinanceUseCase.loadFinance();
+          var result = await loadFinanceUseCase.loadFinance(null, null);
           result.when(
             success: (value) async {
               emit(_IsLoadFinance(value));
@@ -29,6 +29,17 @@ class HistoryTransactionPageBloc extends Bloc<HistoryTransactionPageEvent, Histo
             },
           );
         },
+        loadFinanceRangeByDate: (startDate, endDate) async {
+          var result = await loadFinanceUseCase.loadFinance(startDate, endDate);
+          result.when(
+            success: (value) async {
+              emit(_IsLoadFinance(value));
+            },
+            failure: (errorMessage) {
+              emit(_IsError(errorMessage));
+            },
+          );
+        }
       );
     });
   }

@@ -15,10 +15,10 @@ class LoadFinanceUseCase implements LoadFinance {
   LoadFinanceUseCase({required this.dbHelper});
 
   @override
-  Future<ResultData<Finance>> loadFinance() async {
+  Future<ResultData<Finance>> loadFinance(int? startDate, int? endDate) async {
 
     return dbHelper
-        .getDataWithQuery(TransactionQuery.SELECT_TRANSACTION)
+        .getDataWithQuery(startDate == null && endDate == null ? TransactionQuery.SELECT_TRANSACTION : TransactionQuery.SELECT_TRANSACTION_BETWEET_BY_DATE(startDate!, endDate!))
         .then((values){
           int total = 0;
           var transactions = <TransactionModel>[];
