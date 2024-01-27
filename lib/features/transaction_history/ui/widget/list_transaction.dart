@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_financial_records/common/extension/common_extension.dart';
-import 'package:simple_financial_records/features/home/domain/finance.dart';
-import 'package:simple_financial_records/features/home/domain/transaction_type.dart';
+import 'package:simple_financial_records/features/transaction_history/domain/finance.dart';
+import 'package:simple_financial_records/features/transaction_history/domain/transaction_type.dart';
 
-import '../color_ui_kit.dart';
+import '../../../../common/color_ui_kit.dart';
 
 class ListTransaction extends StatelessWidget {
   const ListTransaction({super.key, this.transaction});

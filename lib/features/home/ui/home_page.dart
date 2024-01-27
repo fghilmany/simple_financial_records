@@ -4,11 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_financial_records/common/color_ui_kit.dart';
-import 'package:simple_financial_records/common/widget/list_transaction.dart';
 import 'package:simple_financial_records/features/home/domain/transaction_type.dart';
 import 'package:simple_financial_records/features/home/presentation/home_page_bloc.dart';
 import 'package:simple_financial_records/features/home/ui/add_transaction_dialog.dart';
-import 'package:simple_financial_records/features/transaction_history/presentation/transaction_history_page.dart';
+import 'package:simple_financial_records/features/home/ui/widget/list_transaction.dart';
+import 'package:simple_financial_records/features/transaction_history/ui/transaction_history_page.dart';
 
 import '../domain/finance.dart';
 

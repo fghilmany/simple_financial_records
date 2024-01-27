@@ -1,5 +1,5 @@
-import 'package:simple_financial_records/features/home/database/model/transaction_model.dart';
-import 'package:simple_financial_records/features/home/domain/finance.dart';
+import 'package:simple_financial_records/features/transaction_history/database/model/transaction_model.dart';
+import 'package:simple_financial_records/features/transaction_history/domain/finance.dart';
 
 class FinanceMapper {
   static List<Transaction> mapTransactionToDomain(
