@@ -193,7 +193,7 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage>
     if (newSelectedDate != null) {
       setState(() {
         _startDate.value = newSelectedDate.start;
-        _endDate.value = newSelectedDate.end;
+        _endDate.value = newSelectedDate.end.add(const Duration(hours: 23, minutes: 59));
         BlocProvider.of<HistoryTransactionPageBloc>(context)
             .add(HistoryTransactionPageEvent.loadFinanceRangeByDate(
           _startDate.value!.millisecondsSinceEpoch,
