@@ -13,7 +13,6 @@ class ListTransaction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("debug: ${transaction?.date}");
     return Row(
       children: [
         if (transaction?.type == TransactionType.income.name) Container(

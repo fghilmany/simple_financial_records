@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_financial_records/common/color_ui_kit.dart';
+import 'package:simple_financial_records/common/extension/common_extension.dart';
 import 'package:simple_financial_records/features/transaction_history/presentation/history_transaction_page_bloc.dart';
 import 'package:simple_financial_records/features/transaction_history/ui/widget/list_transaction.dart';
 
@@ -16,9 +17,11 @@ class TransactionHistoryPage extends StatefulWidget {
   State<TransactionHistoryPage> createState() => _TransactionHistoryPageState();
 }
 
-class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
-
+class _TransactionHistoryPageState extends State<TransactionHistoryPage> with RestorationMixin {
   Finance finance = Finance();
+
+  final RestorableDateTimeN _startDate = RestorableDateTimeN(null);
+  final RestorableDateTimeN _endDate = RestorableDateTimeN(null);
 
   @override
   void initState() {
@@ -46,7 +49,9 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
         title: const Text("Transaction History"),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              _restorableDateRangePickerRouteFuture.present();
+            },
             icon: const Icon(Icons.filter_alt_rounded),
           )
         ],
@@ -74,30 +79,35 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
           return Stack(
             alignment: Alignment.topCenter,
             children: [
-              const Column(
+              Column(
                 children: [
                   Text(
-                    "All",
-                    style: TextStyle(
+                    _startDate.value != null
+                        ? "${_startDate.value!.millisecondsSinceEpoch.parseTimeMillisToDate("dd/MM/yyyy")} - ${_endDate.value!.millisecondsSinceEpoch.parseTimeMillisToDate("dd/MM/yyyy")}"
+                        : "All",
+                    style: const TextStyle(
                       color: Colors.black,
                       fontSize: 18.0,
                     ),
                   ),
-                  Divider(
+                  const Divider(
                     thickness: 1.0,
                     color: Colors.grey,
                   ),
                 ],
               ),
-              if(finance.transaction != null) Padding(
-                padding: const EdgeInsets.only(top: 40.0),
-                child: ListView.builder(
-                    padding: const EdgeInsets.only(bottom: 64.0),
-                    itemCount: finance.transaction?.length,
-                    itemBuilder: (context, index) {
-                      return ListTransaction(transaction: finance.transaction?[index],);
-                    }),
-              ),
+              if (finance.transaction != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 40.0),
+                  child: ListView.builder(
+                      padding: const EdgeInsets.only(bottom: 64.0),
+                      itemCount: finance.transaction?.length,
+                      itemBuilder: (context, index) {
+                        return ListTransaction(
+                          transaction: finance.transaction?[index],
+                        );
+                      }),
+                ),
               Positioned(
                 bottom: 0.0,
                 child: Container(
@@ -141,5 +151,70 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
         },
       ),
     );
+  }
+
+  late final RestorableRouteFuture<DateTimeRange?> _restorableDateRangePickerRouteFuture = RestorableRouteFuture<DateTimeRange?>(
+    onComplete: _selectDateRange,
+    onPresent: (NavigatorState navigator, Object? arguments) {
+      return navigator
+          .restorablePush(_dateRangePickerRoute, arguments: <String, dynamic>{
+        'initialStartDate': _startDate.value?.millisecondsSinceEpoch,
+        'initialEndDate': _endDate.value?.millisecondsSinceEpoch,
+      });
+    },
+  );
+
+  @pragma('vm:entry-point')
+  static Route<DateTimeRange?> _dateRangePickerRoute(
+      BuildContext context,
+      Object? arguments,
+      ) {
+    return DialogRoute<DateTimeRange?>(
+      context: context,
+      builder: (BuildContext context) {
+        return DateRangePickerDialog(
+          restorationId: 'date_picker_dialog',
+          initialDateRange:
+          _initialDateTimeRange(arguments! as Map<dynamic, dynamic>),
+          firstDate: DateTime(2021),
+          currentDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
+          lastDate: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+        );
+      },
+    );
+  }
+
+  void _selectDateRange(DateTimeRange? newSelectedDate) {
+    if (newSelectedDate != null) {
+      setState(() {
+        _startDate.value = newSelectedDate.start;
+        _endDate.value = newSelectedDate.end;
+      });
+    }
+  }
+
+  @override
+  String? get restorationId => "main";
+
+  @override
+  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+    registerForRestoration(_startDate, 'start_date');
+    registerForRestoration(_endDate, 'end_date');
+    registerForRestoration(
+        _restorableDateRangePickerRouteFuture, 'date_picker_route_future');
+  }
+
+  static DateTimeRange? _initialDateTimeRange(Map<dynamic, dynamic> arguments) {
+    if (arguments['initialStartDate'] != null &&
+        arguments['initialEndDate'] != null) {
+      return DateTimeRange(
+        start: DateTime.fromMillisecondsSinceEpoch(
+            arguments['initialStartDate'] as int),
+        end: DateTime.fromMillisecondsSinceEpoch(
+            arguments['initialEndDate'] as int),
+      );
+    }
+
+    return null;
   }
 }
