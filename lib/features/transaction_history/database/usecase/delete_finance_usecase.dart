@@ -9,7 +9,7 @@ class DeleteFinanceUseCase implements DeleteFinance {
 
   @override
   void deleteTransactionById(int id) {
-    dbHelper.getDataWithQuery(TransactionQuery.DELETE_TRANSACTION(id));
+    dbHelper.executeRawQuery(TransactionQuery.DELETE_TRANSACTION(id));
   }
 
 }

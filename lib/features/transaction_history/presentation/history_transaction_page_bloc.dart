@@ -4,6 +4,7 @@ import 'package:simple_financial_records/features/transaction_history/domain/del
 import 'package:simple_financial_records/features/transaction_history/domain/finance.dart';
 
 import '../domain/load_finance.dart';
+import '../domain/update_finance.dart';
 
 part 'history_transaction_page_bloc.freezed.dart';
 
@@ -15,8 +16,9 @@ class HistoryTransactionPageBloc
     extends Bloc<HistoryTransactionPageEvent, HistoryTransactionPageState> {
   final LoadFinance loadFinanceUseCase;
   final DeleteFinance deleteFinance;
+  final UpdateFinance updateFinance;
 
-  HistoryTransactionPageBloc(this.loadFinanceUseCase, this.deleteFinance)
+  HistoryTransactionPageBloc(this.loadFinanceUseCase, this.deleteFinance, this.updateFinance)
       : super(const _Initial()) {
     on<HistoryTransactionPageEvent>((events, emit) async {
       emit(const _IsLoading());
@@ -47,6 +49,9 @@ class HistoryTransactionPageBloc
           deleteTransaction: (int id) {
             deleteFinance.deleteTransactionById(id);
           },
+        updateTransaction: (transaction){
+            updateFinance.updateFinance(transaction);
+        }
       );
     });
   }

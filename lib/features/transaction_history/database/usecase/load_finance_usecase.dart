@@ -17,7 +17,7 @@ class LoadFinanceUseCase implements LoadFinance {
   @override
   Future<ResultData<Finance>> loadFinance(int? startDate, int? endDate) async {
     return dbHelper
-        .getDataWithQuery(startDate == null && endDate == null
+        .executeRawQuery(startDate == null && endDate == null
             ? TransactionQuery.SELECT_TRANSACTION
             : TransactionQuery.SELECT_TRANSACTION_BETWEEN_BY_DATE(
                 startDate!, endDate!))

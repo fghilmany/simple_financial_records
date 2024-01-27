@@ -40,7 +40,7 @@ class DbHelper {
     });
   }
 
-  Future<List> getDataWithQuery(String query) async {
+  Future<List> executeRawQuery(String query) async {
     final db = await openDB();
     var result = await db.rawQuery(query);
     return result.toList();

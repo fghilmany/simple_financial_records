@@ -5,4 +5,5 @@ class HistoryTransactionPageEvent with _$HistoryTransactionPageEvent{
   const factory HistoryTransactionPageEvent.loadFinance() = _HistoryTransactionPageLoaded;
   const factory HistoryTransactionPageEvent.loadFinanceRangeByDate(int startDate, int endDate) = _HistoryTransactionPageLoadedRangeByDate;
   const factory HistoryTransactionPageEvent.deleteTransaction(int id) = _HistoryTransactionPageDeleted;
+  const factory HistoryTransactionPageEvent.updateTransaction(Transaction transaction) = _HistoryTransactionPageUpdated;
 }

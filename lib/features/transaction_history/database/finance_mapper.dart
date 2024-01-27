@@ -13,4 +13,13 @@ class FinanceMapper {
           type: transactionModel.type
         );
       }).toList();
+  static TransactionModel mapTransactionToModel(
+          Transaction transaction) =>
+      TransactionModel(
+          id: transaction.id,
+          nominal: transaction.nominal,
+          dates: transaction.date,
+          notes: transaction.notes ?? "",
+          type: transaction.type
+      );
 }

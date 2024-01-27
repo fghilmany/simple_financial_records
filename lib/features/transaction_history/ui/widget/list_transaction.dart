@@ -4,14 +4,21 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:simple_financial_records/common/extension/common_extension.dart';
 import 'package:simple_financial_records/features/transaction_history/domain/finance.dart';
 import 'package:simple_financial_records/features/transaction_history/domain/transaction_type.dart';
+import 'package:simple_financial_records/features/transaction_history/ui/edit_transaction_dialog.dart';
 
 import '../../../../common/color_ui_kit.dart';
 
 class ListTransaction extends StatefulWidget {
-  const ListTransaction({super.key, this.transaction, required this.deleteItem});
+  const ListTransaction({
+    super.key,
+    this.transaction,
+    required this.deleteItem,
+    required this.updateItem,
+  });
 
   final Transaction? transaction;
   final Function(Transaction transaction) deleteItem;
+  final Function(Transaction transaction) updateItem;
 
   @override
   State<ListTransaction> createState() => _ListTransactionState();
@@ -33,36 +40,39 @@ class _ListTransactionState extends State<ListTransaction> {
               // An action can be bigger than the others.
               flex: 1,
               onPressed: (value) {
-                showDialog(context: context, builder: (buider){
-                  return AlertDialog(
-                    title: const Text("Delete Item"),
-                    content: Text("Are you sure to delete \"${widget.transaction?.notes}\""),
-                    backgroundColor: ColorUiKit.backgroundColor,
-                    actions: [
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          textStyle: Theme.of(context).textTheme.labelLarge,
-                        ),
-                        child: const Text("Cancel"),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          textStyle: Theme.of(context).textTheme.labelLarge,
-                        ),
-                        child: const Text("Delete"),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          setState(() {
-                            widget.deleteItem(widget.transaction!);
-                          });
-                        },
-                      ),
-                    ],
-                  );
-                });
+                showDialog(
+                    context: context,
+                    builder: (builder) {
+                      return AlertDialog(
+                        title: const Text("Delete Item"),
+                        content: Text(
+                            "Are you sure to delete \"${widget.transaction?.notes}\""),
+                        backgroundColor: ColorUiKit.backgroundColor,
+                        actions: [
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              textStyle: Theme.of(context).textTheme.labelLarge,
+                            ),
+                            child: const Text("Cancel"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              textStyle: Theme.of(context).textTheme.labelLarge,
+                            ),
+                            child: const Text("Delete"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              setState(() {
+                                widget.deleteItem(widget.transaction!);
+                              });
+                            },
+                          ),
+                        ],
+                      );
+                    });
               },
               borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(14.0),
@@ -81,14 +91,29 @@ class _ListTransactionState extends State<ListTransaction> {
             SlidableAction(
               // An action can be bigger than the others.
               flex: 1,
-              onPressed: (value) {},
+              onPressed: (value) {
+                showDialog(
+                  context: context,
+                  builder: (builder) {
+                    return EditTransactionDialog(
+                      type: widget.transaction!.type,
+                      onClick: (transaction) {
+                        setState(() {
+                          widget.updateItem(transaction);
+                        });
+                      },
+                      transaction: widget.transaction!,
+                    );
+                  },
+                );
+              },
               borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(14.0),
                   bottomRight: Radius.circular(14.0)),
               backgroundColor: Colors.green,
               foregroundColor: Colors.white,
-              icon: Icons.delete,
-              label: "Delete",
+              icon: Icons.edit,
+              label: "Edit",
             ),
           ],
         ),
