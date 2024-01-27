@@ -183,7 +183,19 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const Padding(
-                padding: EdgeInsets.only(top: 24.0),
+                padding: EdgeInsets.only(top: 16.0),
+                child: Text(
+                  "Go to detail to edit, delete, and get more transactions.",
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 16.0),
                 child: Divider(
                   thickness: 2.0,
                   color: Colors.grey,
