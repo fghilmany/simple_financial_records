@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: AnimatedSplashScreen(
-        splash: "image/personal_finance_logo.png",
+        splash: "image/logo.png",
         splashIconSize: 256.0,
         backgroundColor: ColorUiKit.backgroundColor,
         splashTransition: SplashTransition.decoratedBoxTransition,
