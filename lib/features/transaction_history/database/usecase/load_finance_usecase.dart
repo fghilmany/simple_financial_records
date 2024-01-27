@@ -16,24 +16,28 @@ class LoadFinanceUseCase implements LoadFinance {
 
   @override
   Future<ResultData<Finance>> loadFinance(int? startDate, int? endDate) async {
-
     return dbHelper
-        .getDataWithQuery(startDate == null && endDate == null ? TransactionQuery.SELECT_TRANSACTION : TransactionQuery.SELECT_TRANSACTION_BETWEET_BY_DATE(startDate!, endDate!))
-        .then((values){
-          int total = 0;
-          var transactions = <TransactionModel>[];
-          for (var value in values){
-            final result = TransactionModel.fromJson(value);
-            transactions.add(result);
-            if (result.type == TransactionType.income.name){
-              total += result.nominal;
-            }else{
-              total -= result.nominal;
-            }
-          }
+        .getDataWithQuery(startDate == null && endDate == null
+            ? TransactionQuery.SELECT_TRANSACTION
+            : TransactionQuery.SELECT_TRANSACTION_BETWEEN_BY_DATE(
+                startDate!, endDate!))
+        .then((values) {
+      int total = 0;
+      var transactions = <TransactionModel>[];
+      for (var value in values) {
+        final result = TransactionModel.fromJson(value);
+        transactions.add(result);
+        if (result.type == TransactionType.income.name) {
+          total += result.nominal;
+        } else {
+          total -= result.nominal;
+        }
+      }
 
-          return ResultData.success(Finance(total: total, transaction: FinanceMapper.mapTransactionToDomain(transactions)));
-    }).onError((error, stackTrace){
+      return ResultData.success(Finance(
+          total: total,
+          transaction: FinanceMapper.mapTransactionToDomain(transactions)));
+    }).onError((error, stackTrace) {
       log("error: $error");
       return ResultData.failure(error as String);
     });

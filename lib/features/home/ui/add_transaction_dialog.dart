@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_financial_records/common/color_ui_kit.dart';
@@ -63,7 +65,7 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
                 ),
                 onPressed: () {
                   setState(() {
-                    widget.onClick(TransactionModel(nominal: int.parse(nominalController.value.text), dates: DateTime.now().millisecondsSinceEpoch, notes: notesController.value.text, type: widget.type));
+                    widget.onClick(TransactionModel(id: UniqueKey().hashCode ,nominal: int.parse(nominalController.value.text), dates: DateTime.now().millisecondsSinceEpoch, notes: notesController.value.text, type: widget.type));
                   });
                   Navigator.pop(context);
                 },

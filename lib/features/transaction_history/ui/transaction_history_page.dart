@@ -106,6 +106,11 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage>
                       itemBuilder: (context, index) {
                         return ListTransaction(
                           transaction: finance.transaction?[index],
+                          deleteItem: (transaction){BlocProvider.of<HistoryTransactionPageBloc>(context)
+                              .add(HistoryTransactionPageEvent.deleteTransaction(transaction.id));
+                            BlocProvider.of<HistoryTransactionPageBloc>(context)
+                                .add(const HistoryTransactionPageEvent.loadFinance());
+                          },
                         );
                       }),
                 ),

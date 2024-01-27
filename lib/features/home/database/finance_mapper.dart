@@ -6,6 +6,7 @@ class FinanceMapper {
           List<TransactionModel> transactionModel) =>
       transactionModel.map((transactionModel){
         return Transaction(
+          id: transactionModel.id,
           nominal: transactionModel.nominal,
           date: transactionModel.dates,
           notes: transactionModel.notes,

@@ -7,11 +7,17 @@ import 'package:simple_financial_records/features/transaction_history/domain/tra
 
 import '../../../../common/color_ui_kit.dart';
 
-class ListTransaction extends StatelessWidget {
-  const ListTransaction({super.key, this.transaction});
+class ListTransaction extends StatefulWidget {
+  const ListTransaction({super.key, this.transaction, required this.deleteItem});
 
   final Transaction? transaction;
+  final Function(Transaction transaction) deleteItem;
 
+  @override
+  State<ListTransaction> createState() => _ListTransactionState();
+}
+
+class _ListTransactionState extends State<ListTransaction> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -26,7 +32,38 @@ class ListTransaction extends StatelessWidget {
             SlidableAction(
               // An action can be bigger than the others.
               flex: 1,
-              onPressed: (value) {},
+              onPressed: (value) {
+                showDialog(context: context, builder: (buider){
+                  return AlertDialog(
+                    title: const Text("Delete Item"),
+                    content: Text("Are you sure to delete \"${widget.transaction?.notes}\""),
+                    backgroundColor: ColorUiKit.backgroundColor,
+                    actions: [
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          textStyle: Theme.of(context).textTheme.labelLarge,
+                        ),
+                        child: const Text("Cancel"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          textStyle: Theme.of(context).textTheme.labelLarge,
+                        ),
+                        child: const Text("Delete"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          setState(() {
+                            widget.deleteItem(widget.transaction!);
+                          });
+                        },
+                      ),
+                    ],
+                  );
+                });
+              },
               borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(14.0),
                   bottomLeft: Radius.circular(14.0)),
@@ -59,7 +96,7 @@ class ListTransaction extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 4.0),
           child: Row(
             children: [
-              if (transaction?.type == TransactionType.income.name)
+              if (widget.transaction?.type == TransactionType.income.name)
                 Container(
                   width: 40.0,
                   height: 40.0,
@@ -88,21 +125,21 @@ class ListTransaction extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "Rp ${transaction?.nominal}",
+                          "Rp ${widget.transaction?.nominal}",
                           style: const TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
                               fontSize: 16.0),
                         ),
                         Text(
-                          transaction?.date
+                          widget.transaction?.date
                                   .parseTimeMillisToDate("dd/MM/yyyy") ??
                               "",
                           style: const TextStyle(
                               color: Colors.black, fontSize: 12.0),
                         ),
                         Text(
-                          transaction?.notes ?? "",
+                          widget.transaction?.notes ?? "",
                           style: const TextStyle(
                               color: Colors.black, fontSize: 14.0),
                         ),
@@ -111,7 +148,7 @@ class ListTransaction extends StatelessWidget {
                   ),
                 ),
               ),
-              if (transaction?.type == TransactionType.outcome.name)
+              if (widget.transaction?.type == TransactionType.outcome.name)
                 Container(
                   width: 40.0,
                   height: 40.0,

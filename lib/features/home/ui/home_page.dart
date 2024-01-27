@@ -20,19 +20,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   Finance finance = Finance();
 
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<HomePageBloc>(context).add(const HomePageEvent.loadFinance());
+    BlocProvider.of<HomePageBloc>(context)
+        .add(const HomePageEvent.loadFinance());
   }
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       backgroundColor: ColorUiKit.backgroundColor,
       appBar: AppBar(
@@ -44,9 +42,14 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             onPressed: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const TransactionHistoryPage()));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const TransactionHistoryPage(),
+                ),
+              ).then((value) {
+                BlocProvider.of<HomePageBloc>(context)
+                    .add(const HomePageEvent.loadFinance());
+              });
             },
             icon: const Row(
               children: [
@@ -123,9 +126,12 @@ class _HomePageState extends State<HomePage> {
                             builder: (context) {
                               return AddTransactionDialog(
                                 type: TransactionType.income.name,
-                                onClick: (transactionModel){
-                                  BlocProvider.of<HomePageBloc>(context).add(HomePageEvent.insertFinance(transactionModel));
-                                  BlocProvider.of<HomePageBloc>(context).add(const HomePageEvent.loadFinance());
+                                onClick: (transactionModel) {
+                                  BlocProvider.of<HomePageBloc>(context).add(
+                                      HomePageEvent.insertFinance(
+                                          transactionModel));
+                                  BlocProvider.of<HomePageBloc>(context)
+                                      .add(const HomePageEvent.loadFinance());
                                 },
                               );
                             });
@@ -157,9 +163,12 @@ class _HomePageState extends State<HomePage> {
                             builder: (context) {
                               return AddTransactionDialog(
                                 type: TransactionType.outcome.name,
-                                onClick: (transactionModel){
-                                  BlocProvider.of<HomePageBloc>(context).add(HomePageEvent.insertFinance(transactionModel));
-                                  BlocProvider.of<HomePageBloc>(context).add(const HomePageEvent.loadFinance());
+                                onClick: (transactionModel) {
+                                  BlocProvider.of<HomePageBloc>(context).add(
+                                      HomePageEvent.insertFinance(
+                                          transactionModel));
+                                  BlocProvider.of<HomePageBloc>(context)
+                                      .add(const HomePageEvent.loadFinance());
                                 },
                               );
                             });
@@ -180,14 +189,16 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.grey,
                 ),
               ),
-              if(finance.transaction != null) Expanded(
-                child: ListView.builder(
-                    padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
-                    itemCount: finance.transaction!.length,
-                    itemBuilder: (context, index) {
-                      return ListTransaction(transaction: finance.transaction?[index]);
-                    }),
-              )
+              if (finance.transaction != null)
+                Expanded(
+                  child: ListView.builder(
+                      padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
+                      itemCount: finance.transaction!.length,
+                      itemBuilder: (context, index) {
+                        return ListTransaction(
+                            transaction: finance.transaction?[index]);
+                      }),
+                )
             ],
           );
         },

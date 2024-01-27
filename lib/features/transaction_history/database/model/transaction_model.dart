@@ -6,6 +6,7 @@ part 'transaction_model.g.dart';
 @freezed
 class TransactionModel with _$TransactionModel {
   const factory TransactionModel({
+    required int id,
     required int nominal,
     required int dates,
     required String notes,
